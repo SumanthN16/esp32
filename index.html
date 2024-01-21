@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Send Image to Telegram</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+</head>
+
+<body>
+    <h1>Send Image to Telegram</h1>
+    <form id="imageForm">
+        <input type="file" id="imageInput" accept="image/*">
+        <button type="submit">Send Image</button>
+    </form>
+    <div id="response"></div>
+
+    <script>
+        $(document).ready(function() {
+            $("#imageForm").submit(function(event) {
+                event.preventDefault(); // Prevent default form submission
+
+                var formData = new FormData();
+                var imageFile = $("#imageInput")[0].files[0];
+
+                formData.append("photo", imageFile);
+                formData.append("chat_id", "1275903964"); // Replace with your chat ID
+                formData.append("caption", "Image sent from HTML form");
+
+                $.ajax({
+                    url: "https://api.telegram.org/bot6749875527:AAFjP3HA4iNLPq4T_MBcnaf8B667XhUGvAU/sendPhoto", // Replace with your bot token
+                    type: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        $("#response").text("Image sent successfully! Response: " + response);
+                    },
+                    error: function(error) {
+                        $("#response").text("Error sending image: " + error.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
